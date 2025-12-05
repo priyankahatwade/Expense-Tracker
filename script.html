@@ -1,0 +1,148 @@
+const expensesKey = 'expenses_v1';
+const expensesList = document.getElementById('expensesList');
+const totalAmount = document.getElementById('totalAmount');
+const expenseForm = document.getElementById('expenseForm');
+const exportCsvBtn = document.getElementById('exportCsv');
+const toggleDark = document.getElementById('toggleDark');
+const logoutBtn = document.getElementById('logout');
+const clearAllBtn = document.getElementById('clearAll');
+
+function getExpenses() {
+  return JSON.parse(localStorage.getItem(expensesKey) || '[]');
+}
+
+function saveExpenses(arr) {
+  localStorage.setItem(expensesKey, JSON.stringify(arr));
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  return new Date(d).toLocaleDateString();
+}
+
+function render() {
+  const items = getExpenses();
+  expensesList.innerHTML = '';
+
+  let total = 0;
+
+  items.forEach((it, idx) => {
+    total += parseFloat(it.amount);
+
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div class="meta">
+        <span class="amount">Rs ${parseFloat(it.amount).toFixed(2)}</span>
+        <span>${it.description}</span>
+        <span>${formatDate(it.date)}</span>
+      </div>
+
+      <div>
+        <button class="edit alt" data-idx="${idx}">Edit</button>
+        <button class="del alt" data-idx="${idx}">Delete</button>
+      </div>
+    `;
+
+    expensesList.appendChild(li);
+  });
+
+  totalAmount.textContent = total.toFixed(2);
+  attachHandlers();
+}
+
+function attachHandlers() {
+  document.querySelectorAll('.del').forEach(btn => {
+    btn.onclick = (e) => {
+      const i = +e.target.dataset.idx;
+      const arr = getExpenses();
+      arr.splice(i, 1);
+      saveExpenses(arr);
+      render();
+    };
+  });
+
+  document.querySelectorAll('.edit').forEach(btn => {
+    btn.onclick = (e) => {
+      const i = +e.target.dataset.idx;
+      const arr = getExpenses();
+      const it = arr[i];
+
+      document.getElementById('amount').value = it.amount;
+      document.getElementById('description').value = it.description;
+      document.getElementById('date').value = it.date;
+
+      arr.splice(i, 1);
+      saveExpenses(arr);
+      render();
+    };
+  });
+}
+
+expenseForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const amount = parseFloat(document.getElementById('amount').value);
+  const description = document.getElementById('description').value.trim();
+  const date = document.getElementById('date').value;
+
+  if (!amount || !description) {
+    alert('Enter amount & description');
+    return;
+  }
+
+  const arr = getExpenses();
+  arr.unshift({ amount, description, date });
+
+  saveExpenses(arr);
+  expenseForm.reset();
+  render();
+});
+
+exportCsvBtn.addEventListener('click', () => {
+  const items = getExpenses();
+
+  if (items.length === 0) {
+    alert('No expenses to export');
+    return;
+  }
+
+  const rows = [['Amount', 'Description', 'Date']];
+
+  items.forEach(it =>
+    rows.push([it.amount, it.description, it.date || ''])
+  );
+
+  const csv = rows.map(r => r.join(',')).join('\n');
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'expenses.csv';
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+toggleDark.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('dark', document.body.classList.contains('dark') ? '1' : '0');
+});
+
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('loggedIn');
+  window.location.href = 'login.html';
+});
+
+clearAllBtn.addEventListener('click', () => {
+  if (confirm('Clear all expenses?')) {
+    saveExpenses([]);
+    render();
+  }
+});
+
+if (localStorage.getItem('dark') === '1')
+  document.body.classList.add('dark');
+
+render();

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Daily Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered">
+  <div class="card auth-card">
+    <h2>Daily Expense Tracker</h2>
+    <div id="message" class="msg"></div>
+
+    <form id="loginForm">
+      <label>Username</label>
+      <input type="text" id="username" required>
+
+      <label>Password</label>
+      <input type="password" id="password" required>
+
+      <div class="row">
+        <button type="submit" id="loginBtn">Login</button>
+        <button type="button" id="signupBtn" class="alt">Sign up</button>
+      </div>
+    </form>
+
+    <p class="hint">Note: Sign up once to save credentials in localStorage.</p>
+  </div>
+
+<script>
+const loginForm = document.getElementById('loginForm');
+const signupBtn = document.getElementById('signupBtn');
+const message = document.getElementById('message');
+
+function showMessage(text, type='error') {
+  message.textContent = text;
+  message.className = 'msg ' + type;
+}
+
+signupBtn.addEventListener('click', () => {
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value;
+
+  if (!u || !p) {
+    showMessage('Enter username & password to sign up');
+    return;
+  }
+
+  localStorage.setItem('cred', JSON.stringify({username: u, password: p}));
+  showMessage('Account created. You can now login.', 'success');
+  loginForm.reset();
+});
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value;
+
+  const cred = JSON.parse(localStorage.getItem('cred') || 'null');
+
+  if (!cred) {
+    showMessage('No account found. Please sign up first.');
+    return;
+  }
+
+  if (cred.username === u && cred.password === p) {
+    localStorage.setItem('loggedIn', 'true');
+    window.location.href = 'index.html';
+  } else {
+    showMessage('Incorrect username or password');
+  }
+});
+
+if (localStorage.getItem('loggedIn') === 'true') {
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

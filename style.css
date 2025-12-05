@@ -1,0 +1,167 @@
+:root{
+  --bg:#f3f4f6;
+  --card:#fff;
+  --text:#111;
+  --muted:#555;
+  --accent:#2563eb;
+}
+
+body{
+  font-family:system-ui,Arial;
+  background:var(--bg);
+  color:var(--text);
+  margin:0;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 24px;
+  background:var(--card);
+  box-shadow:0 1px 4px rgba(0,0,0,0.05);
+}
+
+.actions button{
+  margin-left:8px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#3e8352;
+  border:1px solid #ccc;
+  cursor:pointer;
+}
+
+.container{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  padding:24px;
+  max-width:1000px;
+  margin:28px auto;
+}
+
+.card{
+  background:var(--card);
+  padding:16px;
+  border-radius:10px;
+  box-shadow:0 1px 6px rgba(0,0,0,0.05);
+}
+
+.form-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.form-row input{
+  flex:1;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+}
+
+.row{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+button{
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+}
+
+button.alt{
+  background:#eee;
+  color:var(--text);
+  border:1px solid #ccc;
+}
+
+.expenses-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  max-height:320px;
+  overflow:auto;
+}
+
+.expenses-list li{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 6px;
+  border-bottom:1px solid #eee;
+}
+
+.total{
+  margin-top:12px;
+  font-weight:700;
+  text-align:right;
+}
+
+.centered{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  background:#675c8f;
+}
+
+.auth-card{
+  width:320px;
+  padding:20px;
+  background:#a099b7;
+  border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+  padding-right: 40px;
+}
+
+.auth-card input{
+  width:100%;
+  padding:10px;
+  margin-top:16px;
+  border-radius:8px;
+  border:1px solid #ddd;
+
+}
+
+.auth-card label{
+  display:block;
+  margin-top:12px;
+  font-weight:500;
+ 
+}
+
+.msg{
+  height:20px;
+  margin-bottom:8px;
+}
+
+.msg.error{color:#dc2626;}
+.msg.success{color:#16a34a;}
+
+body.dark{
+  background:#0f1724;
+  color:#e6eef8;
+}
+
+body.dark .card,
+body.dark header,
+body.dark .auth-card{
+  background:#0b1220;
+  color:#e6eef8;
+}
+
+body.dark input{
+  background:#071226;
+  color:#dbeafe;
+  border:1px solid #1e3a5f;
+}
+
+body.dark button{
+  background:#1e40af;
+}

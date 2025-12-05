@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Daily Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Daily Expense Tracker</h1>
+    <div class="actions">
+      <button id="exportCsv">Export CSV</button>
+      <button id="toggleDark">Dark Mode</button>
+      <button id="logout">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Add Expense</h2>
+      <form id="expenseForm">
+        <div class="form-row">
+          <input type="number" id="amount" placeholder="Amount" min="0.01" step="0.01" required>
+          <input type="text" id="description" placeholder="Description" required>
+          <input type="date" id="date">
+        </div>
+
+        <div class="row">
+          <button type="submit">Add</button>
+          <button type="button" id="clearAll" class="alt">Clear All</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Expenses</h2>
+      <ul id="expensesList" class="expenses-list"></ul>
+
+      <div class="total">Total: Rs  <span id="totalAmount">0.00</span></div>
+    </section>
+  </main>
+
+<script src="script.js"></script>
+</body>
+</html>
